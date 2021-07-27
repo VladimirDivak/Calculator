@@ -65,34 +65,51 @@ namespace Calculator
             if(symbols != 0)
                 return "Используются недопустимые символы.";
 
-            if(!mathfExprString.Contains('+') && !mathfExprString.Contains('-') && !mathfExprString.Contains('*') && !mathfExprString.Contains('/'))
+            if(!mathfExprString.Contains('+') && !mathfExprString.Contains('-') &&
+            !mathfExprString.Contains('*') && !mathfExprString.Contains('/'))
                 return "Выражение должно содержать математические операции.";
 
-            var firstBrackets = mathfExprString.Count(Daria => Daria == '(');
-            var lastBrackets = mathfExprString.Count(Daria => Daria == ')');
+            var firstBrackets = mathfExprString.Count(ch => ch == '(');
+            var lastBrackets = mathfExprString.Count(ch => ch == ')');
             if (firstBrackets != lastBrackets)
                 return "Выражение содержит неверное количество круглых скобок.";
 
             int reiterationsCounter = 0;
+            int lastCharIndex = -1;
 
             foreach(var symbol in mathfExprString)
             {
-                var exeptionText = "Ошибка в последовательности операций.";
-
+                var exceptionText = "Ошибка в последовательности операций.";
                 if(char.IsSymbol(symbol))
                 {
-                    if(reiterationsCounter == 1)
+                    switch(reiterationsCounter)
                     {
-                        if(symbol != '(' && symbol != ')' && symbol != '-')
-                        {
-                            return exeptionText;
-                        }
+                        case 0:
+                            if((symbol == '(' || symbol == ')') && mathfExprString.IndexOf(symbol) != 0)
+                                return exceptionText;
+                            
+                            lastCharIndex = mathfExprString.IndexOf(symbol);
+                            reiterationsCounter++;
+                        break;
+
+                        case 1:
+                            if(mathfExprString.IndexOf(symbol) == lastCharIndex + 1)
+                            {
+                                if(symbol == '(' || symbol == ')')
+                                {
+                                    reiterationsCounter = 1;
+                                    lastCharIndex = mathfExprString.IndexOf(symbol);
+                                }
+                                else return exceptionText;
+                            }
+                            else
+                            {
+                                reiterationsCounter = 1;
+                                lastCharIndex = mathfExprString.IndexOf(symbol);
+                            }
+                        break;
+
                     }
-                    else if(reiterationsCounter == 2)
-                    {
-                        if(symbols != '-') return exeptionText;
-                    }
-                    else reiterationsCounter++;
                 }
             }
             
