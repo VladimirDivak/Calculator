@@ -11,6 +11,7 @@ namespace Calculator
 
         static void Main()
         {
+            Console.Clear();
             Console.WriteLine("Добро пожаловать!");
             while(true)
             {
@@ -41,6 +42,8 @@ namespace Calculator
                     Console.WriteLine("Выражение было записано корректно.");
                     Console.ForegroundColor = ConsoleColor.White;
                     
+                    Calculate(mathfExprString);
+
                     break;
                 }
             }
@@ -65,7 +68,9 @@ namespace Calculator
             if(!mathfExprString.Contains('+') && !mathfExprString.Contains('-') && !mathfExprString.Contains('*') && !mathfExprString.Contains('/'))
                 return "Выражение должно содержать математические операции.";
 
-            if(mathfExprString.Count(ch => ch == '(' || ch == ')') % 2 != 0)
+            var firstBrackets = mathfExprString.Count(Daria => Daria == '(');
+            var lastBrackets = mathfExprString.Count(Daria => Daria == ')');
+            if (firstBrackets != lastBrackets)
                 return "Выражение содержит неверное количество круглых скобок.";
 
             int reiterationsCounter = 0;
@@ -96,10 +101,60 @@ namespace Calculator
 
         static float Calculate(string expression)
         {
-            List<string> expressions = new List<string>();
-            List<char> operations = new List<char>();
+            var expressions = FindRoundBrackets(expression, out var newExressionString);
 
             return 0.0f;
+        }
+
+        static Dictionary<string, string> FindRoundBrackets(string expression, out string newExressionString)
+        {
+            Dictionary<string, string> expressions = new Dictionary<string, string>();
+            string currentStringFormat = expression;
+            int bracketsCounter = expression.Count(ch => ch == '(' || ch ==')');
+            int exprCounter = 1;
+
+            if(bracketsCounter == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Выражение не содержит круглых скобок.");
+                Console.ForegroundColor = ConsoleColor.White;
+
+                newExressionString = string.Empty;
+                return null;
+            }
+
+            bracketsCounter /= 2;
+
+            Console.WriteLine("Начинаем процесс формирования порядка выполнения выражений...");
+            while(bracketsCounter != 0)
+            {
+                Console.WriteLine($"Осталось обработать {bracketsCounter} пар(у, ы) круглых скобок.");
+
+                int openBracketIndex = currentStringFormat.IndexOf(currentStringFormat.Last(ch => ch == '('));
+                int closeBracketIndex = 0;
+
+                for(int i = openBracketIndex; i < currentStringFormat.Length; i++)
+                {
+                    if(currentStringFormat[i] == ')') closeBracketIndex = i;
+                }
+
+                var newExpr = new string(currentStringFormat.Skip(openBracketIndex).Take(closeBracketIndex - openBracketIndex + 1).ToArray());
+                Console.WriteLine($"Нашёл выражение: {newExpr}");
+
+                expressions.Add($"[{exprCounter}]", newExpr);
+                currentStringFormat = currentStringFormat.Replace(newExpr, $"[{exprCounter}]");
+                Console.WriteLine($"Промежуточный вариант вида выражения: {currentStringFormat}");
+
+                exprCounter++;
+                bracketsCounter--;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Преобразование выполнено. Выражение имеет вид {currentStringFormat}. Количество операций в скобках: {expressions.Count}.");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            newExressionString = currentStringFormat;
+            return expressions;
         }
     }
 }
