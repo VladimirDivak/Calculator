@@ -76,39 +76,52 @@ namespace Calculator
 
             int reiterationsCounter = 0;
             int lastCharIndex = -1;
+            var exceptionText = "Ошибка в последовательности операций.";
 
-            foreach(var symbol in mathfExprString)
+            for(int i = 0; i < mathfExprString.Length; i++)
             {
-                var exceptionText = "Ошибка в последовательности операций.";
-                if(char.IsSymbol(symbol))
+                if(!char.IsNumber(mathfExprString[i]))
                 {
                     switch(reiterationsCounter)
                     {
                         case 0:
-                            if((symbol == '(' || symbol == ')') && mathfExprString.IndexOf(symbol) != 0)
+                            if(mathfExprString[i] == '(' && i != 0 &&
+                            char.IsNumber(mathfExprString[i - 1]))
+                            {
                                 return exceptionText;
+                            }
                             
-                            lastCharIndex = mathfExprString.IndexOf(symbol);
+                            lastCharIndex = i;
                             reiterationsCounter++;
                         break;
 
                         case 1:
-                            if(mathfExprString.IndexOf(symbol) == lastCharIndex + 1)
+                            if(i == lastCharIndex + 1)
                             {
-                                if(symbol == '(' || symbol == ')')
+                                if(mathfExprString[i] == '(' ||
+                                mathfExprString[i] == ')' ||
+                                mathfExprString[i - 1] == ')')
                                 {
                                     reiterationsCounter = 1;
-                                    lastCharIndex = mathfExprString.IndexOf(symbol);
+                                    lastCharIndex = i;
                                 }
                                 else return exceptionText;
                             }
                             else
                             {
                                 reiterationsCounter = 1;
-                                lastCharIndex = mathfExprString.IndexOf(symbol);
+                                lastCharIndex = i;
                             }
                         break;
+                    }
+                }
+                else
+                {
+                    reiterationsCounter = 0;
 
+                    if(i != 0 && mathfExprString[i - 1] == ')')
+                    {
+                        return exceptionText + " 3";
                     }
                 }
             }
@@ -142,17 +155,30 @@ namespace Calculator
 
             bracketsCounter /= 2;
 
-            Console.WriteLine("Начинаем процесс формирования порядка выполнения выражений...");
+            Console.WriteLine("\nНачинаем процесс формирования порядка выполнения выражений...\n");
             while(bracketsCounter != 0)
             {
                 Console.WriteLine($"Осталось обработать {bracketsCounter} пар(у, ы) круглых скобок.");
 
-                int openBracketIndex = currentStringFormat.IndexOf(currentStringFormat.Last(ch => ch == '('));
+                int openBracketIndex = 0;
                 int closeBracketIndex = 0;
+
+                for(int i = currentStringFormat.Length - 1; i >= 0; i--)
+                {
+                    if(currentStringFormat[i] == '(')
+                    {
+                        openBracketIndex = i;
+                        break;
+                    }
+                }
 
                 for(int i = openBracketIndex; i < currentStringFormat.Length; i++)
                 {
-                    if(currentStringFormat[i] == ')') closeBracketIndex = i;
+                    if(currentStringFormat[i] == ')')
+                    {
+                        closeBracketIndex = i;
+                        break;
+                    }
                 }
 
                 var newExpr = new string(currentStringFormat.Skip(openBracketIndex).Take(closeBracketIndex - openBracketIndex + 1).ToArray());
