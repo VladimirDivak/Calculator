@@ -61,7 +61,7 @@ namespace Calculator
 
                         for(int i = 0; i < expressionsValues.Length; i++)
                         {
-                            if(expressionsValues[i].Count(ch => !char.IsNumber(ch) && ch != 'm') != 0)
+                            if(expressionsValues[i].Count(ch => !char.IsNumber(ch) && ch != 'm' && ch != '.') != 0)
                             {
                                 if(!expressionsValues[i].Contains('['))
                                 {
