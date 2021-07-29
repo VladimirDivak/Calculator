@@ -1,0 +1,16 @@
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/Calculator
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/Calculator.deps.json
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/Calculator.runtimeconfig.json
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/Calculator.runtimeconfig.dev.json
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/Calculator.dll
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/ref/Calculator.dll
+/home/vladimir/Документы/Projects/Calculator/bin/Publish/net5.0/Calculator.pdb
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.csproj.AssemblyReference.cache
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.GeneratedMSBuildEditorConfig.editorconfig
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.AssemblyInfoInputs.cache
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.AssemblyInfo.cs
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.csproj.CoreCompileInputs.cache
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.dll
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/ref/Calculator.dll
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.pdb
+/home/vladimir/Документы/Projects/Calculator/obj/Publish/net5.0/Calculator.genruntimeconfig.cache
