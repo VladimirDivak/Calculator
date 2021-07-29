@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
+    enum OperationType
+    {
+        AddOrSub,
+        MulOrDiv
+    }
+
     class Program
     {
         static readonly char[] _correctSymbols = new char[]{'*', '/', '+', '-'};
@@ -17,7 +23,7 @@ namespace Calculator
             {
                 var mathfExprString = string.Empty;
 
-                Console.WriteLine("\nРазрешено использование чисел, круглых скобок и символов\nматематических выражений +, -, *, /.");
+                Console.WriteLine("\nРазрешено использование чисел, запятых, круглых скобок и символов\nматематических выражений +, -, *, /.");
                 Console.WriteLine("\nВведите математическое выражение:");
 
                 mathfExprString = Console.ReadLine();
@@ -61,7 +67,7 @@ namespace Calculator
 
                         for(int i = 0; i < expressionsValues.Length; i++)
                         {
-                            if(expressionsValues[i].Count(ch => !char.IsNumber(ch) && ch != 'm' && ch != '.') != 0)
+                            if(expressionsValues[i].Count(ch => !char.IsNumber(ch) && ch != 'm' && ch != ',') != 0)
                             {
                                 if(!expressionsValues[i].Contains('['))
                                 {
@@ -110,7 +116,7 @@ namespace Calculator
 
             var letters = mathfExprString.Where(ch => char.IsLetter(ch)).ToArray().Length;
             var symbols = mathfExprString.Where(ch => !char.IsNumber(ch) && ch != '+' && ch != '-' && ch != '*' &&
-                ch != '/' && ch != '.' && ch != '(' && ch != ')').ToArray().Length;
+                ch != '/' && ch != ',' && ch != '(' && ch != ')').ToArray().Length;
 
             if(letters != 0)
                 return "Выражение не должно содержать буквы.";
@@ -150,11 +156,11 @@ namespace Calculator
                     mathfExprString[i] != ')')
                         return exceptionText;
                     
-                    if(mathfExprString[i] == '.')
+                    if(mathfExprString[i] == ',')
                     {
                         if(i == 0 || i == mathfExprString.Length - 1 || (!char.IsNumber(mathfExprString[i - 1]) &&
                         !char.IsNumber(mathfExprString[i + 1])))
-                            return "точка в выражении расположена неверно.";
+                            return "запятая в выражении расположена неверно.";
                     }
 
                     switch(reiterationsCounter)
@@ -275,6 +281,17 @@ namespace Calculator
             return expressions;
         }
 
+        static string GetOperationsResult(string expression, OperationType operationType)
+        {
+            char operation1 = new char();
+            char oeration2 = new char();
+
+            string newExprFormat = expression;
+            double resault = 0;
+
+            return null;
+        }
+
         static string Calculate(string expression)
         {
             Console.WriteLine("Выражение на входе: " + expression);
@@ -312,7 +329,7 @@ namespace Calculator
                         {
                             if(iterator == -1)
                                 break;
-                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == '.' || newExprFormat[iterator] == 'm')
+                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == ',' || newExprFormat[iterator] == 'm')
                             {
                                 aStartIndex = iterator;
                                 if(newExprFormat[iterator] == 'm')
@@ -339,7 +356,7 @@ namespace Calculator
                         {
                             if(iterator == newExprFormat.Length)
                                 break;
-                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == '.' || newExprFormat[iterator] == 'm')
+                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == ',' || newExprFormat[iterator] == 'm')
                             {
                                 bEndIndex = iterator;
                                 if(newExprFormat[iterator] == 'm')
@@ -404,7 +421,7 @@ namespace Calculator
                         {
                             if(iterator == -1)
                                 break;
-                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == '.' || newExprFormat[iterator] == 'm')
+                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == ',' || newExprFormat[iterator] == 'm')
                             {
                                 aStartIndex = iterator;
                                 if(newExprFormat[iterator] == 'm')
@@ -431,7 +448,7 @@ namespace Calculator
                         {
                             if(iterator == newExprFormat.Length)
                                 break;  
-                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == '.' || newExprFormat[iterator] == 'm')
+                            else if(char.IsNumber(newExprFormat[iterator]) || newExprFormat[iterator] == ',' || newExprFormat[iterator] == 'm')
                             {
                                 bEndIndex = iterator;
                                 if(newExprFormat[iterator] == 'm')
